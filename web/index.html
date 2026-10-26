@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>nuearth · Atmospheric Oscillations</title>
+  <meta name="description" content="Interactive atmospheric neutrino oscillations through the PREM Earth, computed in the browser with a JavaScript port of MANGO.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top" id="top">
+  <div class="brand">
+    <h1>nuearth</h1>
+    <span class="sub">atmospheric neutrinos crossing the Earth · <a href="https://github.com/pgranger23/mango-osc" target="_blank" rel="noopener">MANGO</a> physics, computed in your browser</span>
+  </div>
+  <nav class="chips" id="channels" aria-label="oscillation channel"></nav>
+  <div class="seg" id="particle" role="group" aria-label="neutrino or antineutrino">
+    <button data-v="nu">ν</button><button data-v="nubar">ν̄</button>
+  </div>
+  <div class="seg" id="ordering" role="group" aria-label="mass ordering">
+    <button data-v="NO" title="normal ordering">NO</button><button data-v="IO" title="inverted ordering">IO</button>
+  </div>
+  <button id="theme" class="ghost" title="toggle theme">◐</button>
+</header>
+
+<main class="layout">
+  <aside class="controls" id="controls">
+    <section>
+      <h2>Instant <span class="badge live">exact rotation</span></h2>
+      <div id="live-sliders"></div>
+      <button id="sweep-dcp" class="ghost wide">▶ sweep δ<sub>CP</sub></button>
+    </section>
+    <section>
+      <h2>Oscillation <span class="badge server">recomputed</span></h2>
+      <div id="osc-sliders"></div>
+      <div class="status" id="status">starting…</div>
+    </section>
+    <section>
+      <h2>View</h2>
+      <label class="field">energy range
+        <select id="erange">
+          <option value="0.1,30" selected>0.1 – 30 GeV</option>
+          <option value="1,100">1 – 100 GeV</option>
+          <option value="2,200">2 – 200 GeV</option>
+        </select>
+      </label>
+      <label class="field">grid
+        <select id="res">
+          <option value="120">120 × 120</option>
+          <option value="160" selected>160 × 160</option>
+          <option value="220">220 × 220</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="smooth" checked> average within each cell
+        <span class="info" data-tip="smooth" tabindex="0" aria-label="about averaging">i</span></label>
+      <button id="reset" class="ghost wide">reset to NuFIT-like defaults</button>
+    </section>
+  </aside>
+
+  <section class="content">
+    <div class="screen">
+      <div class="osc-row">
+        <div class="card">
+          <div class="card-head"><h2 id="title-P">Probability</h2><span class="info" data-tip="P" tabindex="0" aria-label="about this plot">i</span></div>
+          <canvas id="osc-P" class="c-osc"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 id="title-noio">Normal − inverted ordering</h2><span class="info" data-tip="noio" tabindex="0" aria-label="about this plot">i</span></div>
+          <canvas id="osc-noio" class="c-osc"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 id="title-vac">Earth − vacuum</h2><span class="info" data-tip="vac" tabindex="0" aria-label="about this plot">i</span></div>
+          <canvas id="osc-vac" class="c-osc"></canvas>
+        </div>
+      </div>
+
+      <div class="card journey">
+        <div class="card-head">
+          <h2>Journey through the Earth <span class="info" data-tip="journey" tabindex="0" aria-label="about this plot">i</span></h2>
+          <span class="journey-info" id="journey-info"></span>
+          <div class="btns">
+            <button id="travel" class="ghost">▶ travel</button>
+            <button id="sweep-cz" class="ghost" title="rotate the arrival direction">▶ sweep zenith</button>
+          </div>
+        </div>
+        <div class="journey-body">
+          <canvas id="earth" class="c-earth"></canvas>
+          <div class="path-plots">
+            <div class="legend" id="path-legend"></div>
+            <canvas id="pathFlavor" class="c-path"></canvas>
+            <canvas id="pathRho" class="c-rho"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slices">
+      <div class="card">
+        <h3 id="sliceE-title">Energy spectrum along the selected direction</h3>
+        <div class="legend" id="slice-legend"></div>
+        <canvas id="sliceE" class="c-slice"></canvas>
+      </div>
+      <div class="card">
+        <h3 id="sliceC-title">Zenith dependence at the selected energy</h3>
+        <div class="legend" id="slice-legend2"></div>
+        <canvas id="sliceC" class="c-slice"></canvas>
+      </div>
+    </div>
+
+    <div class="card explain">
+      <h2>What the plots show</h2>
+      <dl id="explain"></dl>
+      <p class="hint" id="engine-info"></p>
+    </div>
+  </section>
+</main>
+<footer class="foot">
+  Prototype. Oscillation probabilities: mango-lite, a JavaScript port of
+  <a href="https://github.com/pgranger23/mango-osc" target="_blank" rel="noopener">MANGO</a> (PREM Earth, cayley
+  propagator) tested against MANGO to 5×10⁻¹⁴; θ₂₃/δ<sub>CP</sub> applied as an exact rotation. Inspired by
+  <a href="https://github.com/czczc/nuglass" target="_blank" rel="noopener">NuGlass</a>
+  (C. Zhang, arXiv:2608.25049).
+  <a href="https://github.com/pgranger23/nuearth" target="_blank" rel="noopener">Source</a>.
+</footer>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

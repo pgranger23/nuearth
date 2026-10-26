@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>mango-lite bench</title></head>
+<body><pre id="out">running…</pre>
+<script type="module">
+import { amplitudeGrid } from './js/mango-lite.js';
+const N = 160;
+const E = Array.from({ length: N }, (_, i) => 10 ** (2 * i / (N - 1)));
+const CZ = Array.from({ length: N }, (_, i) => -1 + (2 * i) / (N - 1));
+const osc = { theta12: Math.asin(Math.sqrt(0.307)), theta13: Math.asin(Math.sqrt(0.02215)), dm21: 7.49e-5, dm31: 2.438e-3 + 7.49e-5 };
+amplitudeGrid(osc, {}, E, CZ);
+const t0 = performance.now();
+for (let r = 0; r < 3; r++) amplitudeGrid(osc, {}, E, CZ, r % 2 === 1);
+const ms = (performance.now() - t0) / 3;
+document.getElementById('out').textContent = `160x160 grid: ${ms.toFixed(0)} ms, ${navigator.hardwareConcurrency} hw threads, ${navigator.userAgent}`;
+window.__bench = ms;
+</script></body></html>
